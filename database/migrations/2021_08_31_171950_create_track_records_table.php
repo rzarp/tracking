@@ -22,8 +22,8 @@ class CreateTrackRecordsTable extends Migration
             $table->string('payload');
             $table->dateTime('time');
             $table->integer('frequency');
-            $table->decimal('latitude',8,6);
-            $table->decimal('longitude', 9, 6);
+            $table->string('latitude');
+            $table->string('longitude');
             $table->timestamps();
         });
     }

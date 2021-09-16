@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Track_record;
 
 
+
 class HomeController extends Controller
 {
     /**
@@ -29,9 +30,9 @@ class HomeController extends Controller
     }
     public function adminHome()
     {
-        $tracks = Track_record::all();
-        return view('dashboard.admin',['tracks' => $tracks]);
 
-        
+        $data['tracks'] = Track_record::all(); 
+        return view('dashboard.admin',$data);
     }
+
 }

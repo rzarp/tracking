@@ -1,12 +1,7 @@
 @extends('dashboard.base')
-<!-- @push('scripts')
-    <script>
-        <script src="{{ mix('js/app.js') }}"></script>
-    </script>
-@endpush -->
 @section('content')
     <div class="section-header">
-        <h1>Dashboard</h1>         
+        <h1>Dashboard</h1>
     </div>
     <div class="row">
     <div class="col-4">
@@ -33,7 +28,7 @@
                 @endforeach
             </table>
             </div>
-        </div>              
+        </div>
     </div>
     <div class="col-8">
         <div class="card">
@@ -41,44 +36,114 @@
             <h4>Marker</h4>
             </div>
             <div class="card-body">
-            <div class="map" id="app">
-                    <gmap-map
-                        :center="mapCenter"
-                        :zoom="10"
-                        style="width: 100%; height: 400px;"
-                        @click="handleMapClick"
-                    >
-                    <gmap-info-window
-                            :options="infoWindowOptions"
-                            :position="infoWindowPosition"
-                            :opened="infoWindowOpened"
-                            @closeclick="handleInfoWindowClose"
-                    >
-                    <div class="info-window">
-                        <h2>Perangkat Tersambung</h2> <hr>
-                        <p v-text="'device id : ' + activetracks.dev_id"></p>
-                        <p v-text="'Time : ' + activetracks.time"></p>
-                        <p v-text="'Hardware Serial : ' + activetracks.hardware_serial"></p>
-                        <p v-text="'Lat  : ' + activetracks.latitude"></p>
-                        <p v-text="'Lang : ' + activetracks.longitude"></p>
-                    </div>
-                
-                    </gmap-info-window>
-                    <gmap-marker
-                        v-for="(r, index) in tracks"
-                        :key="r.id"
-                        :position="getPosition(r)"
-                        :clickable="true"
-                        :draggable="false"     
-                        @click="handleMarkerClicked(r)"
-                    ></gmap-marker>
-                </gmap-map>
-                </div>
+                <div id="map-canvas" class="map" style="width:600px;height:400px"></div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+@push('scripts')
+<!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBP70mqIvWolNbVZGWo3vMqEmvwPPVwTog&callback=initialize"></script> -->
+    <script>
+        //Untuk pengaturan map center
+        window.zoom = 5;
+
+        // var koordinat = { lat: -6.373643041124395, lng: 106.784204331353 };
+
+        window.lat = -6.373643041124395;
+        window.lng = 106.784204331353;
+
+        
+
+        function init() {
+            fetch('http://localhost:8000/api/tracks')
+            .then(response => response.json(), (err) => console.log(err))
+            .then(data => {
+                initMap(data);
+            });
+        }
+
+        var map;
+        var LatLng;
+
+        function getRandomArbitrary(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function updatePosition(datas, lastLocations) {
+            //-------- EXPERIMENT ---------//
+            async function getData(arr) {
+                return arr.getPosition();
+            }
+
+            getData(datas).then(
+                (res) => {
+                    LatLng = new google.maps.LatLng(lastLocations.latitude, lastLocations.longitude);
+                    datas.setPosition(LatLng);
+                    console.log(lastLocations.latitude);
+                },
+                (err) => {
+                    console.log(err);
+                }
+            );
+        }
+
+        function initMap(dataltln) {
+            map  = new google.maps.Map(document.getElementById('map-canvas'), {center:{lat:lat,lng:lng},zoom:zoom});
+            setInterval(() => {
+                    fetch('http://localhost:8000/api/tracks')
+                    .then(response => response.json(), (err) => console.log(err))
+                    .then(data => {
+                        console.log(data);
+                        data.forEach((e,i) => {
+                            dataltln[i].latitude = parseFloat(e.latitude);
+                            dataltln[i].longtitude =parseFloat(e.longtitude);
+                        })
+                    })
+                    // updatePosition(markers);
+                },3000);
+            dataltln.forEach((e, i) => {
+                var markers = new google.maps.Marker({
+                                    position:{
+                                        lat:e.latitude,
+                                        lng:e.longitude
+                                    }, map:map
+                                });
+                //update pake fungsi updatePosition()
+                setInterval(() => {
+                    updatePosition(markers, dataltln[i]);
+                }, 5000);
 
 
+                // // infoo markers
+                // var contentString = '<h2> {{$t->latitude}}  </h2>'  ;
 
+                // var infowindow = new google.maps.InfoWindow({
+                //     content: contentString,
+                // }); 
+
+                // var marker = new google.maps.Marker({
+                //     position: koordinat,
+                //     map,
+                // });
+
+                // marker.addListener("click", () => {
+                // infowindow.open({
+                // anchor: marker,
+                // map,
+                // shouldFocus: false,
+                // });
+
+                
+                // });
+                // ... code
+            });
+
+
+           
+
+           
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBP70mqIvWolNbVZGWo3vMqEmvwPPVwTog&callback=init&libraries=places"type="text/javascript"></script>
+@endpush

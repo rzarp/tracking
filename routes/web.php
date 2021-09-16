@@ -15,16 +15,26 @@ use Illuminate\Support\Facades\Route;
 
 
 Auth::routes();
+
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('admin/home', 'HomeController@adminHome')->name('admin.home')->middleware('is_admin');
+
 
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/{tracks}', function () {
-    return response()->view('maps');
-})->where('tracks', '(.*)');
+
+Route::get('/profile', 'SettingController@editProfile')->name('profile');
+Route::put('/profile/action', 'SettingController@updateProfile')->name('profile.action');
+
+
+// Route::get('/{tracks}', function () {
+//     return response()->view('maps');
+// })->where('tracks', '(.*)');
+
+
 
 
 
