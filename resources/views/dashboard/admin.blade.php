@@ -15,14 +15,17 @@
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">Device</th>
-                    <th scope="col">Colors</th>
+                    <th scope="col">Detail</th>
                 </tr>
                 </thead>
-                <tbody>
                 @foreach ($tracks as $t)
+                <tbody>
                 <tr>
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>{{$t->dev_id}}</td>
+                    <td>
+                    <button class="btn btn-primary" data-toggle="modal" onClick="DetailModal('{{json_encode($t)}}')">Detail</button>
+                    </td>
                 </tr>
                 </tbody>
                 @endforeach
@@ -41,6 +44,52 @@
         </div>
     </div>
 </div>
+
+
+
+<div class="modal fade" role="dialog" id="modalDetailBarang" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+           
+            <div class="modal-body">
+
+            <div class="form-group">
+                <label for="">Device :</label>
+                <span class="input-group-text" id="modal-content"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="">latitude :</label>
+                <span class="input-group-text" id="modal-latitude"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="">Longtitude :</label>
+                <span class="input-group-text" id="modal-longitude"></span>
+            </div>
+
+            </div>
+
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 @endsection
 @push('scripts')
 <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBP70mqIvWolNbVZGWo3vMqEmvwPPVwTog&callback=initialize"></script> -->
@@ -137,13 +186,37 @@
                 
                 // });
                 // ... code
-            });
-
-
-           
-
-           
+            });           
         }
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBP70mqIvWolNbVZGWo3vMqEmvwPPVwTog&callback=init&libraries=places"type="text/javascript"></script>
+    
+    <!-- <script>
+        // $('.detail-modal').on('click', function (event) {
+        //     event.preventDefault();
+        //     // tangkap id modal yang ingin dimunculkan
+        //     var id = $(this).attr('data-modal');
+            
+        //     // munculkan modal berdasarkan id
+        //     $('#comment-modal-'+id).modal();
+        // }
+    </script>  -->
+
+    <script>
+        var DetailModal = (data) => {
+            var json = JSON.parse(data)
+            var modal = $('#modalDetailBarang');
+            modal.modal ('toggle')
+            $('#modal-content').html(json.dev_id);
+            $('#modal-latitude').html(json.latitude);
+            $('#modal-longitude').html(json.longitude);
+            console.log( $('#modal-content'))
+        }
+    </script>
+    
+   
 @endpush
+
+
+
+

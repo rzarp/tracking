@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Track_record;
+use DB;
 
 
 
@@ -33,6 +34,13 @@ class HomeController extends Controller
 
         $data['tracks'] = Track_record::all(); 
         return view('dashboard.admin',$data);
+    }
+
+    public function detail(Request $request,$id)
+    {
+        $data['detail'] = Track_record::find($id);
+        return view('dashboard.admin',$data);
+
     }
 
 }

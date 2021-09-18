@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="../node_modules/weathericons/css/weather-icons.min.css">
   <link rel="stylesheet" href="../node_modules/weathericons/css/weather-icons-wind.min.css">
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"> 
 
 
   <!-- Template CSS -->
@@ -61,12 +62,12 @@
   <script src="{{asset('assets/stisla/js/stisla.js')}}"></script>
 
   <!-- JS Libraies -->
-  <script src="../node_modules/simpleweather/jquery.simpleWeather.min.js"></script>
+  <!-- <script src="../node_modules/simpleweather/jquery.simpleWeather.min.js"></script>
   <script src="../node_modules/chart.js/dist/Chart.min.js"></script>
   <script src="../node_modules/jqvmap/dist/jquery.vmap.min.js"></script>
-  <script src="../node_modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-  <script src="../node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+  <script src="../node_modules/jqvmap/dist/maps/jquery.vmap.world.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> -->
+  <!-- <script src="../node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script> -->
 
   <!-- Template JS File -->
   <script src="{{asset('assets/stisla/js/scripts.js')}}"></script>
@@ -79,6 +80,7 @@
       $('#summernote').summernote();
       });
   </script>
+  
   @stack('scripts')
 
 </body>

@@ -30,6 +30,9 @@ Route::get('/profile', 'SettingController@editProfile')->name('profile');
 Route::put('/profile/action', 'SettingController@updateProfile')->name('profile.action');
 
 
+Route::get('detail/device/{id}', 'HomeController@detail')->name('detail');
+
+
 // Route::get('/{tracks}', function () {
 //     return response()->view('maps');
 // })->where('tracks', '(.*)');
